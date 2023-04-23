@@ -1,4 +1,4 @@
-package de.keyle.MyPetDownloader;
+package org.mypet.MyPetDownloader;
 
 import com.google.common.hash.Hasher;
 import com.google.common.hash.Hashing;
@@ -7,8 +7,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.InvalidPluginException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;

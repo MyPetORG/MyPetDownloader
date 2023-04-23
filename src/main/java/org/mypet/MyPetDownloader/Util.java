@@ -1,4 +1,4 @@
-package de.keyle.MyPetDownloader;
+package org.mypet.MyPetDownloader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
