@@ -1,0 +1,6 @@
+name: MyPetDownloader
+main: de.keyle.MyPetDownloader.MyPetDownloader
+version: ${project.version}
+api-version: 1.13
+softdepend:
+  - MyPet
