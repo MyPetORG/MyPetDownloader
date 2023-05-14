@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
 public class Util {
+
+
     public static String readUrlContent(String address) throws IOException {
         return readUrlContent(address, 2000);
     }
@@ -37,5 +40,34 @@ public class Util {
             }
         }
         return contents.toString();
+    }
+
+    public static int versionCompare(String str1, String str2) {
+        String[] vals1 = str1.split("\\.");
+        String[] vals2 = str2.split("\\.");
+        if (vals1.length > vals2.length) {
+            int oldLength = vals2.length;
+            vals2 = Arrays.copyOf(vals2, vals1.length);
+            for (int i = oldLength; i < vals1.length; i++) {
+                vals2[i] = "0";
+            }
+        } else if (vals2.length > vals1.length) {
+            int oldLength = vals1.length;
+            vals1 = Arrays.copyOf(vals1, vals2.length);
+            for (int i = oldLength; i < vals2.length; i++) {
+                vals1[i] = "0";
+            }
+        }
+        int i = 0;
+        while (i < vals1.length - 1 && vals1[i].equals(vals2[i])) {
+            i++;
+        }
+        if (i < vals1.length) {
+            try {
+                return Integer.valueOf(vals1[i]).compareTo(Integer.valueOf(vals2[i]));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return 0;
     }
 }

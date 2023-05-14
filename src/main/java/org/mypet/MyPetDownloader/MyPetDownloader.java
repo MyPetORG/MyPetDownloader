@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -48,9 +50,11 @@ public class MyPetDownloader extends JavaPlugin {
     }
 
     private static final Pattern PACKAGE_VERSION_MATCHER = Pattern.compile(".*\\.(v\\d+_\\d+_R\\d+)(?:.+)?");
+    private Map<String, Integer> compareCache = new HashMap<>();
+    private String minecraftVersion = "0.0.0";
+    protected static String internalVersion;
 
     protected static Download latest = null;
-    protected static String internalVersion;
     protected File pluginFile = null;
     protected Thread thread;
     protected String plugin;
@@ -79,6 +83,11 @@ public class MyPetDownloader extends JavaPlugin {
         if(pluginFile != null) {
             try {
                 Bukkit.getPluginManager().loadPlugin(pluginFile);
+                //If it's pure spigot or paper before 1.19.3 we need to call onLoad manually
+                if(Bukkit.getServer().getVersion().toUpperCase().contains("SPIGOT") ||
+                    compareWithMinecraftVersion("1.19.3") < 0) {
+                    Bukkit.getPluginManager().getPlugin("MyPet").onLoad();
+                }
             } catch (Exception ignored) {
             }
         }
@@ -117,7 +126,6 @@ public class MyPetDownloader extends JavaPlugin {
                 return Optional.of(new Download(version, build, downloadURL));
             }
         } catch (Exception ignored) {
-            ignored.printStackTrace();
         }
         return Optional.empty();
     }
@@ -157,5 +165,14 @@ public class MyPetDownloader extends JavaPlugin {
             }
         };
         downloadRunner.run();
+    }
+
+    private int compareWithMinecraftVersion(String version) {
+        if (compareCache.containsKey(minecraftVersion + "-::-" + version)) {
+            return compareCache.get(minecraftVersion + "-::-" + version);
+        }
+        int compare = Util.versionCompare(minecraftVersion, version);
+        compareCache.put(minecraftVersion + "-::-" + version, compare);
+        return compare;
     }
 }

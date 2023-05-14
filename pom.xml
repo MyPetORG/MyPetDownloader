@@ -3,11 +3,11 @@
 
   <groupId>org.mypet</groupId>
   <artifactId>MyPetDownloader</artifactId>
-  <version>1</version>
+  <version>1.1</version>
   <name>MyPetDownloader</name>
 
   <build>
-    <finalName>MyPetDownloader</finalName>
+    <finalName>MyPetDownloader-v${version}</finalName>
     <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
     <resources>
       <resource>
