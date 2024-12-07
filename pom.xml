@@ -3,7 +3,7 @@
 
   <groupId>org.mypet</groupId>
   <artifactId>MyPetDownloader</artifactId>
-  <version>1.2</version>
+  <version>1.3</version>
   <name>MyPetDownloader</name>
 
   <build>
