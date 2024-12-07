@@ -76,7 +76,7 @@ public class MyPetDownloader extends JavaPlugin {
 
         // Paper 1.20.6+ works differently - yay
         if (internalVersion == null) {
-            internalVersion = GetBukkitVersionFromMinecraftVersion();
+            internalVersion = getBukkitVersionFromMinecraftVersion();
         }
 
         Runnable generalDownloadRunner = () -> {
@@ -102,7 +102,7 @@ public class MyPetDownloader extends JavaPlugin {
         }
     }
 
-    private String GetBukkitVersionFromMinecraftVersion() {
+    private String getBukkitVersionFromMinecraftVersion() {
         HashMap<String, String> versionMap = new HashMap<>();
         BufferedReader donation = null;
         int timeout = 2000;
