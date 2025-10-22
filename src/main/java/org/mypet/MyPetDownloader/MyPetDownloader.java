@@ -21,12 +21,10 @@ import java.util.regex.Pattern;
 public class MyPetDownloader extends JavaPlugin {
     public class Download {
         String version;
-        int build;
         String downloadURL;
 
-        public Download(String version, int build, String downloadURL) {
+        public Download(String version, String downloadURL) {
             this.version = version;
-            this.build = build;
             this.downloadURL = downloadURL;
         }
 
@@ -34,15 +32,11 @@ public class MyPetDownloader extends JavaPlugin {
             return version;
         }
 
-        public int getBuild() {
-            return build;
-        }
-
         public String getDownloadURL() { return downloadURL; }
 
         @Override
         public String toString() {
-            return version + "-B" + build;
+            return version;
         }
     }
 
@@ -139,27 +133,14 @@ public class MyPetDownloader extends JavaPlugin {
 
             for (int i = 0; i<resultArr.size(); i++) {
                 JsonObject release = (JsonObject) resultArr.get(i);
-                String rawVersion = release.get("name").getAsString();
-
-                String[] split = rawVersion.split("-");
-
-                int build = Integer.parseInt(split[split.length-1].substring(1));
 
                 if(!release.get("body").getAsString().contains(internalVersion)) { //MC-Version not supported
                     Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "This version of Minecraft is not supported by the newest builds of MyPet!");
                     return Optional.empty();
                 }
 
-                String version = "";
-                for(int j = 0; j<split.length-1;j++) {
-                    version+=split[j];
-                    if(j<split.length-2) {
-                        version+="-";
-                    }
-                }
-
                 String downloadURL = release.get("assets").getAsJsonArray().get(0).getAsJsonObject().get("browser_download_url").getAsString();
-                return Optional.of(new Download(version, build, downloadURL));
+                return Optional.of(new Download(release.get("name").getAsString(), downloadURL));
             }
         } catch (Exception ignored) {
         }
