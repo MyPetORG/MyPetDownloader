@@ -130,18 +130,24 @@ public class MyPetDownloader extends JavaPlugin {
             // no data will be saved on the server
             String content = Util.readUrlContent(url);
             JsonArray resultArr = new Gson().fromJson(content, JsonArray.class);
+            Optional<Download> download = Optional.empty();
 
             for (int i = 0; i<resultArr.size(); i++) {
                 JsonObject release = (JsonObject) resultArr.get(i);
 
                 if(!release.get("body").getAsString().contains(internalVersion)) { //MC-Version not supported
-                    Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "This version of Minecraft is not supported by the newest builds of MyPet!");
-                    return Optional.empty();
+                    continue;
                 }
 
                 String downloadURL = release.get("assets").getAsJsonArray().get(0).getAsJsonObject().get("browser_download_url").getAsString();
-                return Optional.of(new Download(release.get("name").getAsString(), downloadURL));
+                download = Optional.of(new Download(release.get("name").getAsString(), downloadURL));
+                break;
             }
+
+            if (!download.isPresent()) {
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "This version of Minecraft is not supported by the newest builds of MyPet!");
+            }
+            return download;
         } catch (Exception ignored) {
         }
         return Optional.empty();
